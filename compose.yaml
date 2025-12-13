@@ -20,8 +20,6 @@ services:
     container_name: rsync-server
     command: server
     env_file: "./secrets/ssh-auth-key.env"
-    environment:
-      -  SSH_AUTH_KEY_1=${PUBLIC_KEY}
     volumes:
       - "/mnt/backup/:/data/"
     network_mode: service:ts-rsync
