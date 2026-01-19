@@ -1,0 +1,17 @@
+version: 1
+
+host:
+  id: "apple"
+
+devices:
+  - device: /dev/sda
+    type: 'scsi'
+
+  - device: /dev/sdb
+    type: 'sat'
+
+  - device: /dev/sdc
+    type: 'sat'
+
+  - device: /dev/sdd
+    type: 'sat'
