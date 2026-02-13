@@ -81,6 +81,19 @@ services:
       - "/dev/sdd"
       - "/dev/bus/usb"
 
+  watchtower:
+    container_name: watchtower
+    image: nickfedor/watchtower:1
+    env_file: ./secrets/watchtower.env
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: --cleanup --remove-volumes --schedule "0 0 4 * * *"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+
 volumes:
   ts-rsync-state:
     name: "apple-ts-rsync-state"
