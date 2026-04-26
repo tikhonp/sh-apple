@@ -2,6 +2,7 @@ services:
   ts-rsync:
     image: tailscale/tailscale:stable
     container_name: ts-rsync
+    restart: unless-stopped
     hostname: apple-ts-backup
     env_file: 
       - "./secrets/headscale.env"
@@ -14,43 +15,58 @@ services:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
-    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
 
   rsync-server:
     image: eeacms/rsync:3.0
     container_name: rsync-server
+    restart: unless-stopped
     command: server
     env_file: "./secrets/ssh-auth-key.env"
     volumes:
       - "/mnt/backup/:/data/"
     network_mode: service:ts-rsync
-    restart: unless-stopped
     depends_on:
       - ts-rsync
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
 
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
+    restart: unless-stopped
     command: agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DOZZLE_HOSTNAME=apple
       - DOZZLE_NO_ANALYTICS=true
-    restart: unless-stopped
+    network_mode: service:ts-dozzle
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
       interval: 5s
       retries: 5
       start_period: 5s
       start_interval: 5s
-    network_mode: service:ts-dozzle
     depends_on:
       -  ts-dozzle
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
 
   ts-dozzle:
     image: tailscale/tailscale:stable
     container_name: ts-dozzle
+    restart: unless-stopped
     hostname: apple-ts-dozzle
     env_file: 
       - "./secrets/tailscale.env"
@@ -64,7 +80,11 @@ services:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
-    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
 
   scrutiny-collector:
     image: ghcr.io/analogj/scrutiny:master-collector
@@ -81,12 +101,17 @@ services:
       - "/dev/sda"
       - "/dev/sdb"
       - "/dev/sdc"
-      - "/dev/sdd"
       - "/dev/bus/usb"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
 
   watchtower:
     container_name: watchtower
     image: nickfedor/watchtower:1
+    restart: unless-stopped
     env_file: 
       - "./secrets/watchtower.env"
       - "./secrets/proxy.env"

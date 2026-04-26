@@ -12,6 +12,3 @@ devices:
 
   - device: /dev/sdc
     type: 'sat'
-
-  - device: /dev/sdd
-    type: 'sat'
