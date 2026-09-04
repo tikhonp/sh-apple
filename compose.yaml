@@ -22,7 +22,7 @@ services:
         max-file: "10"
 
   rsync-server:
-    image: eeacms/rsync:3.0
+    image: eeacms/rsync:3.1
     container_name: rsync-server
     restart: unless-stopped
     command: server
