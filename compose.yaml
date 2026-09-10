@@ -113,7 +113,6 @@ services:
     restart: unless-stopped
     env_file: 
       - "./secrets/watchtower.env"
-      - "./secrets/proxy.env"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command: --cleanup --remove-volumes --schedule "0 0 4 * * *"
