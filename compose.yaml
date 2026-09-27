@@ -94,12 +94,12 @@ services:
       - SYS_ADMIN
     volumes:
       - "/run/udev:/run/udev:ro"
-      - "./collector-config.yaml/:/opt/scrutiny/config/collector.yaml:ro"
+      - "./collector-config.yaml:/opt/scrutiny/config/collector.yaml:ro"
     env_file: "./secrets/scrutiny.env"
     devices:
-      - "/dev/sda"
-      - "/dev/sdb"
-      - "/dev/sdc"
+      - "/dev/disk/by-id/ata-APPLE_HDD_HTS541010A9E662_J88000EZHWVV3D:/dev/sda"  # internal
+      - "/dev/disk/by-id/ata-ST5000LM000-2AN170_WCJ25PKT:/dev/sdb"               # LaCie Rugged (USB)
+      - "/dev/disk/by-id/ata-WDC_WD30EZRZ-00Z5HB0_WD-WCC4N7ARN5Y5:/dev/sdc"      # WD Elements (USB)
       - "/dev/bus/usb"
     logging:
       driver: "json-file"
