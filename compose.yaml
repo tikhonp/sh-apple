@@ -49,6 +49,8 @@ services:
     command: agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/backup:/host/disks/backup:ro
+      - /proc:/host/proc:ro
     environment:
       - DOZZLE_HOSTNAME=apple
       - DOZZLE_NO_ANALYTICS=true
