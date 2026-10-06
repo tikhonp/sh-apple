@@ -57,6 +57,11 @@ services:
       retries: 5
       start_period: 5s
       start_interval: 5s
+    secrets:
+      - source: cert
+        target: /dozzle_cert.pem
+      - source: key
+        target: /dozzle_key.pem
     depends_on:
       -  ts-dozzle
     logging:
@@ -132,3 +137,9 @@ volumes:
     name: "apple-ts-rsync-state"
   ts-dozzle-state:
     name: "apple-ts-dozzle-state"
+
+secrets:
+  cert:
+    file: ./secrets/dozzle-certs/dozzle_cert.pem
+  key:
+    file: ./secrets/dozzle-certs/dozzle_key.pem
