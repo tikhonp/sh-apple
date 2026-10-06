@@ -22,6 +22,8 @@ services:
       options:
         max-size: "100m"
         max-file: "10"
+    labels:
+      - dev.dozzle.update=auto
 
   rsync-server:
     image: eeacms/rsync:3.1
@@ -69,6 +71,8 @@ services:
       options:
         max-size: "100m"
         max-file: "10"
+    labels:
+      - dev.dozzle.update=auto
 
   ts-dozzle:
     image: tailscale/tailscale:stable
@@ -94,6 +98,8 @@ services:
       options:
         max-size: "100m"
         max-file: "10"
+    labels:
+      - dev.dozzle.update=auto
 
   scrutiny-collector:
     image: ghcr.io/analogj/scrutiny:latest-collector
@@ -116,21 +122,8 @@ services:
       options:
         max-size: "100m"
         max-file: "10"
-
-  watchtower:
-    container_name: watchtower
-    image: nickfedor/watchtower:1
-    restart: unless-stopped
-    env_file: 
-      - "./secrets/watchtower.env"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    command: --cleanup --remove-volumes --schedule "0 0 4 * * *"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "10"
+    labels:
+      - dev.dozzle.update=auto
 
 volumes:
   ts-rsync-state:
